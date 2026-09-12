@@ -1,0 +1,141 @@
+
+Java : java –version
+Git:git –version
+Tomcat - netstat -ano | findstr :8080
+We get a pid no
+tasklist | findstr 12345(pid no)
+
+taskkill /PID pidno /F
+
+:: Check port 8080
+netstat -ano | findstr :8080
+
+:: Find process
+tasklist | findstr PID
+
+:: Kill process
+taskkill /PID PID /F
+
+:: Go to Tomcat
+cd /d "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\bin"
+
+:: Start
+startup.bat
+
+:: Stop
+shutdown.bat
+
+docker –version
+
+
+
+
+ 
+POM.xml file
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.library</groupId>
+    <artifactId>library-management</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+</project>
+
+
+
+1)	Right click the folder -> maven -> update Maven project
+2)	Right click -> run as -> maven built -> in goals add clean package
+3)	In terminal run -> java -jar target\library-management-1.0-SNAPSHOT.jar
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.library</groupId>
+    <artifactId>library-management</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>com.library.LibraryManagement</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
+
+
+1)	In integrated terminal run -> mvn clean package
+2)	In terminal run -> java -jar target\library-management-1.0-SNAPSHOT.jar
+ 
+
+Git commands
+
+Git init
+Git status
+Git config
+	Create a .gitignore file and add 
+target/
+	.classpath
+	.project
+	.settings/
+git commit --amend -m "Added Book Management Module"
+git restore Book.java / git restore src/main/java/com/library/Book.java
+
+from branch:
+git fetch origin
+git merge origin/main
+
+git restore --staged .
+
+add this in gitignore
+*.class
+
+
+Dockerfile:
+
+FROM eclipse-temurin:21-jre
+
+WORKDIR /app
+
+COPY target/library-management-1.0-SNAPSHOT.jar app.jar
+
+EXPOSE 8080
+
+CMD ["java", "-jar", "app.jar"]
