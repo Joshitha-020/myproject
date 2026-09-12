@@ -1,0 +1,321 @@
+POM.xml
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.aiolms</groupId>
+    <artifactId>ai-olms</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <packaging>war</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>AI-OLMS</finalName>
+    </build>
+
+</project>
+
+Chech if all are 21/17 based on question.
+In java build path, in fecets , in show views , integrated jre part
+
+From tomcat bin directory run
+version.bat
+or
+catalina.bat version
+
+Do this that is copy the war file to tomcat
+
+copy "D:\3-1\SE\Lab\Lab_internal_QP\practice_lab\AI-OLMS\target\AI-OLMS.war" "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\webapps\"
+
+
+Then check it
+dir "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\webapps"
+
+Inside the tomcat server only do :
+startup.bat
+
+
+
+
+
+Step 1 — Stop Tomcat if it is already running
+Open Command Prompt as Administrator.
+Go to Tomcat's bin:
+cd /d "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\bin"
+If Tomcat is running from this terminal, press:
+Ctrl + C
+If it is running as a Windows service, we can handle that separately.
+________________________________________
+Step 2 — Copy your WAR into Tomcat
+Run:
+copy "D:\3-1\SE\Lab\Lab_internal_QP\practice_lab\AI-OLMS\target\AI-OLMS.war" "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\webapps\"
+You should get:
+        1 file(s) copied.
+Now check:
+dir "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\webapps"
+You should see:
+AI-OLMS.war
+________________________________________
+Step 3 — Start Tomcat
+Still inside:
+D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\bin
+run:
+startup.bat
+A Tomcat window should open.
+Wait around 5–10 seconds.
+________________________________________
+Step 4 — Check whether Tomcat deployed the WAR
+Go to:
+D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\webapps
+Initially you have:
+AI-OLMS.war
+After Tomcat deploys it, you should normally see:
+AI-OLMS.war
+AI-OLMS
+The AI-OLMS folder is the extracted/deployed application.
+You can check from CMD:
+dir "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\webapps"
+Look for:
+AI-OLMS
+AI-OLMS.war
+________________________________________
+Step 5 — Check Tomcat logs
+If the AI-OLMS folder does not appear, check the logs.
+Go to:
+cd /d "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\logs"
+Then:
+dir
+You'll see files such as:
+catalina.2026-09-12.log
+localhost.2026-09-12.log
+You can open the latest log in Notepad:
+notepad "D:\Program Files\Apache Tomcat\apache-tomcat-9.0.120\logs\catalina.2026-09-12.log"
+The date in the filename may be different, so use the actual filename shown by dir.
+Look for:
+SEVERE
+ERROR
+Exception
+FAIL
+________________________________________
+Step 6 — Open the application
+Because your WAR is:
+AI-OLMS.war
+Tomcat normally gives it the context path:
+/AI-OLMS
+So open:
+http://localhost:8080/AI-OLMS/
+Important
+Don't use only:
+http://localhost:8080
+to test your application.
+That URL is Tomcat's root context.
+Your application is:
+http://localhost:8080/AI-OLMS/
+________________________________________
+If you get 404
+Then we'll check:
+1. Is AI-OLMS.war in webapps?
+              ↓
+2. Did AI-OLMS/ get extracted?
+              ↓
+3. Is Tomcat running?
+              ↓
+4. What do the Tomcat logs say?
+              ↓
+5. Is the JSP/servlet structure correct?
+For your lab exam, this is exactly the troubleshooting process for 1(f).
+Since your Java versions are already correct, start with Steps 2–6 now.
+
+
+
+
+Git
+
+git init
+git status
+git add .
+git commit -m "Initial commit"
+git remote add origin <repository-url>
+git branch -M main
+git push -u origin main
+
+
+
+
+In git bash:
+cd "D:/3-1/SE/Lab/Lab_internal_QP/practice_lab/AI-OLMS"
+
+
+
+Dockerfile:
+
+
+FROM maven:3.9-eclipse-temurin-17 AS build
+
+WORKDIR /app
+
+COPY pom.xml .
+
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+
+FROM tomcat:10.1-jdk17-temurin
+
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+COPY --from=build /app/target/AI-OLMS.war /usr/local/tomcat/webapps/AI-OLMS.war
+
+EXPOSE 8080
+
+
+
+docker build -t ai-olms:latest .
+
+docker images
+
+docker run -d --name ai-olms -p 8080:8080 ai-olms:latest
+
+
+
+docker ps
+
+docker logs ai-olms
+
+docker exec -it ai-olms ls /usr/local/tomcat/webapps
+
+docker port ai-olms
+
+docker exec -it ai-olms bash
+
+docker stop ai-olms
+
+docker start ai-olms
+
+docker rm -f ai-olms
+
+
+
+For the lab exam, your main Docker commands are:
+docker build -t ai-olms:latest .
+docker run -d --name ai-olms -p 8080:8080 ai-olms:latest
+docker ps
+docker logs ai-olms
+docker exec -it ai-olms ls /usr/local/tomcat/webapps
+
+
+
+
+
+Step 1 — Create a Docker Hub repository
+Go to Docker Hub and log in.
+Then:
+1.	Click Repositories 
+2.	Click Create repository 
+3.	Repository name:
+ai-olms
+4.	Choose Public (unless your faculty requires private) 
+5.	Click Create 
+Your repository will look like:
+YOUR_DOCKERHUB_USERNAME/ai-olms
+For example, if your username is joshitha123:
+joshitha123/ai-olms
+________________________________________
+Step 2 — Login from Git Bash
+Open Git Bash and run:
+docker login
+Docker will ask for your Docker Hub username and password/token.
+After successful login, you should get:
+Login Succeeded
+If Docker asks for a password, use your Docker Hub password or an access token if your account requires token-based authentication.
+________________________________________
+Step 3 — Check your existing image
+You already created:
+docker build -t ai-olms:latest .
+Check it:
+docker images
+You should have:
+REPOSITORY    TAG       IMAGE ID
+ai-olms       latest    xxxxxxxxx
+________________________________________
+Step 4 — Tag the image for Docker Hub
+This is the important step.
+Suppose your Docker Hub username is:
+joshitha123
+Run:
+docker tag ai-olms:latest joshitha123/ai-olms:latest
+Replace joshitha123 with your actual Docker Hub username.
+Now check:
+docker images
+You should see both:
+ai-olms                  latest
+joshitha123/ai-olms      latest
+They refer to the same image.
+________________________________________
+Step 5 — Push to Docker Hub
+Run:
+docker push joshitha123/ai-olms:latest
+Again, replace joshitha123 with your username.
+You'll see Docker uploading the image layers.
+At the end, you should get something similar to:
+latest: digest: sha256:xxxxxxxx...
+That means the image has been pushed successfully.
+________________________________________
+Step 6 — Verify on Docker Hub
+Open your Docker Hub repository.
+You should see:
+ai-olms
+with the tag:
+latest
+So your final Docker Hub image is:
+YOUR_USERNAME/ai-olms:latest
+________________________________________
+The complete commands to remember
+For your lab exam, the sequence is:
+docker login
+docker build -t ai-olms:latest .
+docker tag ai-olms:latest YOUR_USERNAME/ai-olms:latest
+docker push YOUR_USERNAME/ai-olms:latest
+For example:
+docker login
+docker build -t ai-olms:latest .
+docker tag ai-olms:latest joshitha123/ai-olms:latest
+docker push joshitha123/ai-olms:latest
+One useful exam point
+Build → Tag → Push
+Dockerfile
+    ↓
+docker build
+    ↓
+Local image
+    ↓
+docker tag
+    ↓
+YOUR_USERNAME/ai-olms:latest
+    ↓
+docker push
+    ↓
+Docker Hub
+If you give me your Docker Hub username, I can write the exact commands with your username filled in, so you can copy-paste them.
+
